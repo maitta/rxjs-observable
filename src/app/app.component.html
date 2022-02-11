@@ -1,32 +1,33 @@
-<!-- Toolbar -->
 <div class="toolbar" role="banner">
   <img
     width="40"
     alt="Angular Logo"
     src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
   />
-  <span>XXX</span>
+  <span>RxJS Observable Example Project</span>
 </div>
 
 <div class="content" role="main">
 
-  <!-- Highlight Card -->
-  <app-observable [title]="title"></app-observable>
-
-  <div class="card-container">
-   <app-observer [num]="1"></app-observer>  
+  <div class="card-container observers-tight">
+   <app-observer [num]="1"></app-observer>
    <app-observer [num]="2"></app-observer>  
    <app-observer [num]="3"></app-observer>
   </div>
 
-  <!-- Terminal -->
-  <app-console></app-console>
+  <img src="../assets/images/subscribe-both.png">
 
+  <div class="card-container">    
+    <app-observable [title]="'Timer Service'"></app-observable>
+    <app-observable [title]="'HTTP Service'"></app-observable>
+  </div>
   
+  <img src="../assets/images/subscribe-one.png">
 
-  <!-- Footer -->
+  <app-timer></app-timer>
+
   <footer>
-    <app-timer></app-timer>
+    <app-console></app-console>
   </footer>
 
   <svg id="clouds" xmlns="http://www.w3.org/2000/svg" width="2611.084" height="485.677" viewBox="0 0 2611.084 485.677">

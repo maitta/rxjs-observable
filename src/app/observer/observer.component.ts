@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { HttpService } from '../http.service';
-import { LoggerService } from '../logger.service';
-import { TimerService } from '../timer.service';
+import { Data } from '../json-server/data';
+import { HttpService } from '../services/http.service';
+import { LoggerService } from '../services/logger.service';
+import { TimerService } from '../services/timer.service';
 
 @Component({
   selector: 'app-observer',
@@ -10,7 +11,8 @@ import { TimerService } from '../timer.service';
 })
 export class ObserverComponent implements OnInit {
 
-  @Input() num: number = -1
+  @Input() num!: number
+  data?: Data
 
   constructor(private http: HttpService, private log: LoggerService, private timer: TimerService) {
   }
@@ -45,11 +47,11 @@ export class ObserverComponent implements OnInit {
   private setSubscriptionLateMulticast(){
     setTimeout(() => {
       this.timer.getMultiCastTimerObservable().subscribe(
-        res => this.log.put('observer #' + this.num + ' received a time update with value: ' + res),
-        err => this.log.put('multicast subscription #' + this.num + ' could not be initialized: ' + err),
-        () => this.log.put('multicast subscription is done for component #' + this.num)
+        res => this.getData(res),
+        err => this.handleTimerError(ConnectionType.multicast, err),
+        () => this.handleTimerCompletion(ConnectionType.multicast)
       )
-      this.log.put('observer #' + this.num + ' has set up its late multicast subscription')   
+      this.log.put(`observer #${this.num} has set up its late multicast subscription`)   
     }, 4000)  
   }
 
@@ -58,11 +60,11 @@ export class ObserverComponent implements OnInit {
    */
   private setSubscriptionRunningMulticast(){
     this.timer.getMultiCastTimerObservable().subscribe(
-      res => this.log.put('observer #' + this.num + ' received a time update with value: ' + res),
-      err => this.log.put('multicast subscription #' + this.num + ' could not be initialized: ' + err),
-      () => this.log.put('multicast subscription is done for component #' + this.num)
+      res => this.getData(res),
+      err => this.handleTimerError(ConnectionType.multicast, err),
+      () => this.handleTimerCompletion(ConnectionType.multicast)
     )
-    this.log.put('observer #' + this.num + ' has set up its prompt multicast subscription')   
+    this.log.put(`observer #${this.num} has set up its prompt multicast subscription`)   
   }
 
   /**
@@ -72,11 +74,32 @@ export class ObserverComponent implements OnInit {
   private setSubscriptionUnicast(){
     setTimeout(() => {
       this.timer.getTimerObservable().subscribe(
-        res => this.log.put('observer #' + this.num + ' received a time update with value: ' + res),
-        err => this.log.put('unicast subscription #' + this.num + ' could not be initialized: ' + err),
-        () => this.log.put('unicast subscription is finally done for component #' + this.num)
+        res => this.getData(res),
+        err => this.handleTimerError(ConnectionType.unicast, err),
+        () => this.handleTimerCompletion(ConnectionType.unicast)
       )
-      this.log.put('observer #' + this.num + ' has set up its -just-in-time- unicast subscription')   
+      this.log.put(`observer #${this.num} has set up its -just-in-time- unicast subscription`)   
     }, 2000)
   }
+
+  private getData(currentTick: number): void {
+    currentTick++ // rxjs interval starts at 0
+    this.http.getData(currentTick).subscribe((data: Data) => { 
+      this.data = {...data}
+      this.log.put(`(${currentTick}) observer #${this.num} received a json response: \n ${JSON.stringify(this.data)}`)
+    })
+  }
+
+  private handleTimerError(type: ConnectionType, err: any): void{
+    this.log.put(`${type} subscription #${this.num} could not be initialized: ${err}`)
+  }
+
+  private handleTimerCompletion(type: ConnectionType): void {
+    this.log.put(`${type} subscription is done for component observer #${this.num}`)
+  }
+}
+
+const enum ConnectionType{
+  unicast = 'unicast',
+  multicast = 'multicast'
 }

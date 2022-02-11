@@ -1,6 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subscriber } from "rxjs"
-import { LoggerService } from '../logger.service';
 
 @Component({
   selector: 'app-observable',
@@ -9,7 +7,7 @@ import { LoggerService } from '../logger.service';
 })
 export class ObservableComponent implements OnInit {
 
-  @Input() title: string = ''
+  @Input() title?: string
   
 
   constructor() {
