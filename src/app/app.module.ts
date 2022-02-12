@@ -7,6 +7,7 @@ import { TimerComponent } from './timer/timer.component';
 import { ConsoleComponent } from './console/console.component';
 import { ObservableComponent } from './observable/observable.component';
 import { ObserverComponent } from './observer/observer.component';
+import { ArrowComponent } from './arrow/arrow.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { ObserverComponent } from './observer/observer.component';
     TimerComponent,
     ConsoleComponent,
     ObservableComponent,
-    ObserverComponent
+    ObserverComponent,
+    ArrowComponent
   ],
   imports: [
     BrowserModule,
