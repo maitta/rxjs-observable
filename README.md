@@ -1,5 +1,7 @@
 # RxjsObservable
 
+This application will fire two timers that are provided as two observables, one unicast and one multicast. Every tick of the system three other subscribers will start receiving updates from them and will in turn call a mock web service within their allotted time.
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.5.
 
 ## Development server
